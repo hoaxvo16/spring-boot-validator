@@ -25,18 +25,14 @@ public class ValidationService {
 
         if (field.isAnnotationPresent(NotNull.class) && Objects.isNull(value)) {
             NotNull annotation = field.getAnnotation(NotNull.class);
-            validationError.setCode(annotation.code());
-            validationError.setMessage(annotation.message());
-            validationError.setPresent(Boolean.TRUE);
+            validationError.makeError(annotation.code(), annotation.message());
         }
 
         if (field.isAnnotationPresent(Email.class)) {
             Matcher matcher = Regex.VALID_EMAIL_ADDRESS_REGEX.matcher(String.valueOf(value));
             Email annotation = field.getAnnotation(Email.class);
             if (!matcher.find()) {
-                validationError.setCode(annotation.code());
-                validationError.setMessage(annotation.message());
-                validationError.setPresent(Boolean.TRUE);
+                validationError.makeError(annotation.code(), annotation.message());
             }
         }
     }

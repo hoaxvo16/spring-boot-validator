@@ -13,4 +13,10 @@ public class ValidationError {
     private String message;
 
     private boolean isPresent;
+
+    public void makeError(String code, String message) {
+        this.isPresent = true;
+        this.code = code;
+        this.message = message;
+    }
 }
