@@ -1,4 +1,4 @@
-package com.hoaxvo.springbootvalidator.annotations.field;
+package com.hoaxvo.springbootvalidator.lib.annotations.field;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

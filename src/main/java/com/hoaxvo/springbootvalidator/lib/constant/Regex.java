@@ -1,4 +1,4 @@
-package com.hoaxvo.springbootvalidator.constant;
+package com.hoaxvo.springbootvalidator.lib.constant;
 
 import java.util.regex.Pattern;
 

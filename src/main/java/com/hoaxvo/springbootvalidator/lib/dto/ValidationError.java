@@ -1,4 +1,4 @@
-package com.hoaxvo.springbootvalidator.dto;
+package com.hoaxvo.springbootvalidator.lib.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -11,4 +11,6 @@ import lombok.NoArgsConstructor;
 public class ValidationError {
     private String code;
     private String message;
+
+    private boolean isPresent;
 }

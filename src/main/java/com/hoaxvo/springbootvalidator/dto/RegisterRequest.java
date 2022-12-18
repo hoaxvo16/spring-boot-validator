@@ -1,7 +1,7 @@
 package com.hoaxvo.springbootvalidator.dto;
 
-import com.hoaxvo.springbootvalidator.annotations.field.Email;
-import com.hoaxvo.springbootvalidator.annotations.field.NotNull;
+import com.hoaxvo.springbootvalidator.lib.annotations.field.Email;
+import com.hoaxvo.springbootvalidator.lib.annotations.field.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,10 +1,10 @@
-package com.hoaxvo.springbootvalidator.service;
+package com.hoaxvo.springbootvalidator.lib.service;
 
 
-import com.hoaxvo.springbootvalidator.annotations.field.Email;
-import com.hoaxvo.springbootvalidator.annotations.field.NotNull;
-import com.hoaxvo.springbootvalidator.constant.Regex;
-import com.hoaxvo.springbootvalidator.dto.ValidationError;
+import com.hoaxvo.springbootvalidator.lib.annotations.field.Email;
+import com.hoaxvo.springbootvalidator.lib.annotations.field.NotNull;
+import com.hoaxvo.springbootvalidator.lib.constant.Regex;
+import com.hoaxvo.springbootvalidator.lib.dto.ValidationError;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,7 @@ public class ValidationService {
             NotNull annotation = field.getAnnotation(NotNull.class);
             validationError.setCode(annotation.code());
             validationError.setMessage(annotation.message());
+            validationError.setPresent(Boolean.TRUE);
         }
 
         if (field.isAnnotationPresent(Email.class)) {
@@ -35,8 +36,8 @@ public class ValidationService {
             if (!matcher.find()) {
                 validationError.setCode(annotation.code());
                 validationError.setMessage(annotation.message());
+                validationError.setPresent(Boolean.TRUE);
             }
         }
-
     }
 }

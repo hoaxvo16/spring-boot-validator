@@ -1,4 +1,4 @@
-package com.hoaxvo.springbootvalidator.annotations;
+package com.hoaxvo.springbootvalidator.lib.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
