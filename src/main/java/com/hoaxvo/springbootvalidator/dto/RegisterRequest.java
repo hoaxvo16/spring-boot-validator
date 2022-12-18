@@ -2,6 +2,7 @@ package com.hoaxvo.springbootvalidator.dto;
 
 import com.hoaxvo.springbootvalidator.lib.annotations.field.Email;
 import com.hoaxvo.springbootvalidator.lib.annotations.field.NotNull;
+import com.hoaxvo.springbootvalidator.lib.annotations.field.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ public class RegisterRequest {
 
     @NotNull(code = "E01", message = "Email not null")
     @Email(code = "E02", message = "Hey email invalid!!!")
+    @Size(max = 10, code = "E03", message = "Max size is 10")
     private String email;
 
 }

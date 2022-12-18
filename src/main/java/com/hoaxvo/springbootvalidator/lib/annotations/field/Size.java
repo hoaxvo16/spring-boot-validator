@@ -7,9 +7,13 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Email {
-    String message() default "Email invalid";
+public @interface Size {
 
+    String message() default "Size not valid";
 
     String code() default "";
+
+    int max() default Integer.MAX_VALUE;
+
+    int min() default 0;
 }
