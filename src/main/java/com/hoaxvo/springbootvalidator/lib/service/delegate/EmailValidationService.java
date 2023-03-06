@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 
 @Service
-public class EmailService implements DelegateService {
+public class EmailValidationService implements ValidationService {
     @Override
     public void handleValidation(Field field, Object value, ValidationError validationError) {
         Matcher matcher = Regex.VALID_EMAIL_ADDRESS_REGEX.matcher(String.valueOf(value));

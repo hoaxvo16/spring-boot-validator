@@ -1,9 +1,9 @@
 package com.hoaxvo.springbootvalidator.lib.service;
 
 
+import com.hoaxvo.springbootvalidator.lib.container.AnnotationContainer;
+import com.hoaxvo.springbootvalidator.lib.container.ContainerMember;
 import com.hoaxvo.springbootvalidator.lib.dto.ValidationError;
-import com.hoaxvo.springbootvalidator.lib.store.AnnotationStore;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,31 +16,25 @@ import java.util.Objects;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ValidationService {
+public class ValidationEngine {
 
-    private final DeliveryService deliveryService;
+    private final ProxyService proxyService;
 
 
     public void handleValidate(Field field, Object value, ValidationError validationError) {
         if (Objects.isNull(validationError))
             return;
 
+        List<ContainerMember> containerMembers = AnnotationContainer.getAnnotations();
 
-        List<Class<? extends Annotation>> annotations = AnnotationStore.getAnnotations();
-
-        annotations.forEach(annotation -> {
+        containerMembers.forEach(containerMember -> {
+            Class<? extends Annotation> annotation = containerMember.getAnnotation();
+            String serviceBeanName = containerMember.getServiceBeanName();
             if (field.isAnnotationPresent(annotation) && !validationError.isPresent()) {
-                deliveryService.delivery(field, value, validationError, annotation);
+                proxyService.delivery(field, value, validationError, annotation, serviceBeanName);
             }
         });
 
 
     }
-
-    @PostConstruct
-    public void initStore() {
-        AnnotationStore.init();
-    }
-
-
 }

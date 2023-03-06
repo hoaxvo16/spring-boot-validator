@@ -1,7 +1,7 @@
 package com.hoaxvo.springbootvalidator.lib.aspect;
 
 import com.hoaxvo.springbootvalidator.lib.dto.ValidationError;
-import com.hoaxvo.springbootvalidator.lib.service.ValidationService;
+import com.hoaxvo.springbootvalidator.lib.service.ValidationEngine;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,8 +17,7 @@ import java.util.Objects;
 @Slf4j
 @RequiredArgsConstructor
 public class ValidationAspect {
-    private final ValidationService validationService;
-
+    private final ValidationEngine validationEngine;
 
     @Around("@annotation(com.hoaxvo.springbootvalidator.lib.annotations.Validated)")
     public Object executeValidate(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
@@ -32,7 +31,7 @@ public class ValidationAspect {
                 for (Field field : param.getClass().getDeclaredFields()) {
                     field.setAccessible(true);
                     Object fieldValue = field.get(param);
-                    validationService.handleValidate(field, fieldValue, validationError);
+                    validationEngine.handleValidate(field, fieldValue, validationError);
                 }
         }
 

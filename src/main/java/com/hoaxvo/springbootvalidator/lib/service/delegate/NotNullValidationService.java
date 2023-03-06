@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Service
 @Slf4j
-public class NotNullService implements DelegateService {
+public class NotNullValidationService implements ValidationService {
     @Override
     public void handleValidation(Field field, Object value, ValidationError validationError) {
         if (Objects.isNull(value)) {

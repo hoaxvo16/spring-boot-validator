@@ -1,13 +1,14 @@
-package com.hoaxvo.springbootvalidator.lib.service.delegate;
+package com.hoaxvo.springbootvalidator.service;
 
-import com.hoaxvo.springbootvalidator.lib.annotations.field.Size;
+import com.hoaxvo.springbootvalidator.annotation.Size;
 import com.hoaxvo.springbootvalidator.lib.dto.ValidationError;
+import com.hoaxvo.springbootvalidator.lib.service.delegate.ValidationService;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 
-@Service
-public class SizeService implements DelegateService {
+@Service("myCustomSizeService")
+public class SizeService implements ValidationService {
     @Override
     public void handleValidation(Field field, Object value, ValidationError validationError) {
         Size annotation = field.getAnnotation(Size.class);
