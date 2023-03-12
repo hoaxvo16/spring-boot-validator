@@ -6,12 +6,13 @@ import com.hoaxvo.springbootvalidator.lib.service.delegate.ValidationService;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
 
 @Service("myCustomSizeService")
-public class SizeService implements ValidationService {
+public class SizeService extends ValidationService {
     @Override
-    public void handleValidation(Field field, Object value, ValidationError validationError) {
-        Size annotation = field.getAnnotation(Size.class);
+    public void handleValidation(Field field, Object value, Parameter parameter, ValidationError validationError) {
+        Size annotation = getAnnotation(Size.class, parameter, field);
         String stringValue = String.valueOf(value);
 
         if (annotation.max() < stringValue.length())

@@ -14,7 +14,7 @@ public class RegisterRequest {
 
     @NotNull(code = "E01", message = "Email not null")
     @Email(code = "E02", message = "Hey email invalid!!!")
-    @Size(max = 10, message = "Max size is 10")
+    @Size(code = "E03", max = 10, message = "Max size is 10")
     private String email;
 
 }

@@ -2,6 +2,7 @@ package com.hoaxvo.springbootvalidator.lib.aspect;
 
 import com.hoaxvo.springbootvalidator.lib.dto.ValidationError;
 import com.hoaxvo.springbootvalidator.lib.service.ValidationEngine;
+import com.hoaxvo.springbootvalidator.lib.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -25,14 +26,22 @@ public class ValidationAspect {
         Object[] args = proceedingJoinPoint.getArgs();
 
         ValidationError validationError = findValidationError(args);
-
+        int index = 0;
         for (Object param : args) {
             if (param.getClass() != ValidationError.class)
                 for (Field field : param.getClass().getDeclaredFields()) {
-                    field.setAccessible(true);
-                    Object fieldValue = field.get(param);
-                    validationEngine.handleValidate(field, fieldValue, validationError);
+                    Object fieldValue;
+                    boolean isPrimitive = ObjectUtils.isPrimitiveValue(param);
+                    if (ObjectUtils.isPrimitiveValue(param)) {
+                        fieldValue = param;
+                    } else {
+                        field.setAccessible(true);
+                        fieldValue = field.get(param);
+                    }
+                    validationEngine.handleValidate(field, fieldValue, validationError,
+                            proceedingJoinPoint, isPrimitive, index);
                 }
+            index++;
         }
 
         return proceedingJoinPoint.proceed();
@@ -50,6 +59,5 @@ public class ValidationAspect {
 
         return null;
     }
-
 
 }

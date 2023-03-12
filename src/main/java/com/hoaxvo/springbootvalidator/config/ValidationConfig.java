@@ -2,6 +2,7 @@ package com.hoaxvo.springbootvalidator.config;
 
 import com.hoaxvo.springbootvalidator.annotation.Size;
 import com.hoaxvo.springbootvalidator.lib.annotations.field.Email;
+import com.hoaxvo.springbootvalidator.lib.annotations.field.NotNull;
 import com.hoaxvo.springbootvalidator.lib.container.AnnotationContainer;
 import com.hoaxvo.springbootvalidator.lib.container.ContainerMember;
 import jakarta.annotation.PostConstruct;
@@ -14,14 +15,8 @@ public class ValidationConfig {
     @PostConstruct
     public void annotationContainer() {
         AnnotationContainer.addMember(Arrays.asList(
-                ContainerMember
-                        .builder()
-                        .serviceBeanName("myCustomSizeService")
-                        .annotation(Size.class)
-                        .build(),
-                ContainerMember
-                        .builder()
-                        .annotation(Email.class)
-                        .build()));
+                ContainerMember.builder().annotation(NotNull.class).build(),
+                ContainerMember.builder().serviceBeanName("myCustomSizeService").annotation(Size.class).build(),
+                ContainerMember.builder().annotation(Email.class).build()));
     }
 }
