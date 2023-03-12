@@ -1,5 +1,21 @@
 ## Usage
 
+### Config
+
+```java
+
+@Configuration
+public class ValidationConfig {
+    @PostConstruct
+    public void annotationContainer() {
+        AnnotationContainer.addMember(Arrays.asList(
+                ContainerMember.builder().annotation(NotNull.class).build(),
+                ContainerMember.builder().serviceBeanName("myCustomSizeService").annotation(Size.class).build(),
+                ContainerMember.builder().annotation(Email.class).build()));
+    }
+}
+```
+
 Mark controller validated and add ***ValidationError*** parameter
 if there is an error value of ***validationError.isPresent()*** will be true
 
@@ -47,4 +63,23 @@ public class RegisterRequest {
 }
 ```
 
+### Custom service bean for validation
 
+```java
+
+@Service("myCustomSizeService")
+public class SizeService extends ValidationService {
+    @Override
+    public void handleValidation(Field field, Object value, Parameter parameter, ValidationError validationError) {
+        Size annotation = getAnnotation(Size.class, parameter, field);
+        String stringValue = String.valueOf(value);
+
+        if (annotation.max() < stringValue.length())
+            validationError.makeError(annotation.code(), annotation.message());
+
+        if (annotation.min() > stringValue.length())
+            validationError.makeError(annotation.code(), annotation.message());
+    }
+
+}
+```
