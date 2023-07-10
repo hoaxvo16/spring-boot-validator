@@ -31,8 +31,7 @@ public class UserController {
         }
         log.info("Register request is {}", request);
         response.setData(request);
-
-        return ResponseEntity.ok(response);
+        throw  new RuntimeException("Test audit");
     }
 
     @GetMapping(value = "/user")

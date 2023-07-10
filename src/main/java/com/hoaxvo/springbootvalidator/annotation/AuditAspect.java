@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -31,8 +33,8 @@ public class AuditAspect {
     private final HttpServletRequest httpServletRequest;
     private final ObjectMapper objectMapper;
 
-    @Around("@annotation(com.hoaxvo.springbootvalidator.annotation.Audit)")
-    public Object processAuditLog(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    @After("@annotation(com.hoaxvo.springbootvalidator.annotation.Audit)")
+    public void processAuditLog(JoinPoint proceedingJoinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
         String auditTraceId = UUID.randomUUID().toString();
         MDC.put("traceId", auditTraceId);
@@ -41,7 +43,7 @@ public class AuditAspect {
         Audit audit = method.getAnnotation(Audit.class);
         String payload = objectMapper.writeValueAsString(args);
         String functionName = audit.functionName();
-        return proceedingJoinPoint.proceed();
+        checkMethodCompleteSuccess(proceedingJoinPoint);
     }
 
     private String getCollectionName() {
@@ -52,6 +54,19 @@ public class AuditAspect {
             throw new RuntimeException("Cannot get collection name in url for audit purpose the url must be pattern /{collectionname}/**");
         }
         return strings[1];
+    }
+
+    private void checkMethodCompleteSuccess(JoinPoint joinPoint) {
+        try {
+            Object returnValue = ((ProceedingJoinPoint) joinPoint).proceed();
+            log.info("Method {} returned with value {}",
+                    joinPoint.getSignature().toShortString(),
+                    returnValue);
+        } catch (Throwable e) {
+            log.error("Exception type {} threw exception: {}",
+                    e.getClass().getSimpleName(),
+                    e.getMessage());
+        }
     }
 
 
