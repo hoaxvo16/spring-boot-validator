@@ -1,11 +1,13 @@
 package com.hoaxvo.springbootvalidator.controller;
 
+import com.hoaxvo.springbootvalidator.annotation.Audit;
 import com.hoaxvo.springbootvalidator.dto.RegisterRequest;
 import com.hoaxvo.springbootvalidator.dto.Response;
 import com.hoaxvo.springbootvalidator.lib.annotations.Validated;
 import com.hoaxvo.springbootvalidator.lib.annotations.field.Email;
 import com.hoaxvo.springbootvalidator.lib.dto.ValidationError;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class UserController {
 
-    @PostMapping(value = "/register")
-    @Validated
+    @PostMapping("/register")
+    @Audit(functionName = "CREATE_USER")
     public ResponseEntity<Response<RegisterRequest>> registerUser(@RequestBody RegisterRequest request,
                                                                   ValidationError validationError) {
         Response<RegisterRequest> response = new Response<>();
